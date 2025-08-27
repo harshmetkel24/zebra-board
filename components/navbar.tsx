@@ -1,4 +1,6 @@
 import { ModeToggle } from "@/components/modeToggle";
+import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -11,6 +13,11 @@ const Navbar = () => {
       </div>
       <div className="flex text-xl items-center space-x-4">
         <ModeToggle />
+        <Button className="bg-amber-200" size="icon" asChild>
+          <Link href="/profile">
+            <User />
+          </Link>
+        </Button>
       </div>
     </nav>
   );
