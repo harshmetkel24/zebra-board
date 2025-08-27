@@ -35,7 +35,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen min-w-screen">
+          <div className="h-screen w-screen">
             <Navbar />
             {children}
           </div>
