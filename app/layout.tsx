@@ -1,5 +1,7 @@
 import Navbar from "@/components/navbar";
+import Footer from "@/components/ui/footer";
 import { ThemeProvider } from "@/components/providers/themeProvider";
+import clsx from "clsx";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,7 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={clsx(
+          geistSans.className,
+          geistMono.className,
+          "${geistMono.variable} min-h-screen w-screen antialiased flex flex-col",
+        )}
       >
         <ThemeProvider
           attribute="class"
@@ -35,10 +41,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="h-screen w-screen">
-            <Navbar />
-            {children}
-          </div>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

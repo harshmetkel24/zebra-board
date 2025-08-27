@@ -1,22 +1,15 @@
 import { ModeToggle } from "@/components/modeToggle";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between p-4 border-b bg-background">
+    <nav className="flex-between h-[var(--h-nav)] p-4 border-b bg-background">
       <div className="flex items-center space-x-4">
-        <Link href="/" className="text-xl font-bold">
-          Zebra Board
+        <Link href="/" className="text-2xl font-bold">
+          ZebraBoard
         </Link>
       </div>
-      <div className="flex items-center space-x-4">
-        <Link href="/about">
-          <Button variant="ghost">About</Button>
-        </Link>
-        <Link href="/contact">
-          <Button variant="ghost">Contact</Button>
-        </Link>
+      <div className="flex text-xl items-center space-x-4">
         <ModeToggle />
       </div>
     </nav>
