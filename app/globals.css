@@ -45,7 +45,8 @@
 
 :root {
   --h-nav: 64px;
-  --h-ex-nav: calc(100% - var(--h-nav));
+  --h-footer: 96px;
+  --h-ex-nav-footer: calc(100vh - var(--h-nav) - var(--h-footer));
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -124,8 +125,8 @@
 }
 
 @layer utilities {
-  .h-ex-nav {
-    height: var(--h-ex-nav);
+  .h-ex-nav-footer {
+    height: var(--h-ex-nav-footer);
   }
   .cp {
     cursor: pointer;

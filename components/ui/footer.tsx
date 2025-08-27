@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="border-t bg-background p-4 mt-auto">
+    <footer className="border-t bg-background p-4 mt-auto h-[var(--h-footer)]">
       <div className="flex flex-col items-center space-y-4">
         <div className="flex items-center space-x-4">
           <Link href="/about">
