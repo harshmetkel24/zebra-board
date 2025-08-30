@@ -1,6 +1,19 @@
 import { CustomThemes } from "./types";
 
 export const themes: CustomThemes = {
+  default: {
+    name: "Default",
+    light: {
+      primary: "oklch(0.21 0.006 285.885)",
+      secondary: "oklch(0.967 0.001 286.375)",
+      tertiary: "oklch(0.967 0.001 286.375)",
+    },
+    dark: {
+      primary: "oklch(0.92 0.004 286.32)",
+      secondary: "oklch(0.274 0.006 286.033)",
+      tertiary: "oklch(0.274 0.006 286.033)",
+    },
+  },
   ocean: {
     name: "Ocean Blue",
     light: {
