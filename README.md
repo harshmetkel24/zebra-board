@@ -1,4 +1,4 @@
-# <img src="public/zebra-board.png" alt="Zebra Board Logo" width="40" height="40" /> Zebra Board
+# <img src="public/zebra-board-no-bg.png" alt="Zebra Board Logo" width="40" height="40" /> Zebra Board
 
 [![Typing Speed Test](https://img.shields.io/badge/Typing-Speed%20Test-blue)](https://github.com/your-username/zebra-board)
 [![Next.js](https://img.shields.io/badge/Next.js-15.5.0-black)](https://nextjs.org/)
