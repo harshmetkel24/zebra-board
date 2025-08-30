@@ -13,7 +13,7 @@ const Navbar = () => {
       </div>
       <div className="flex text-xl items-center space-x-4">
         <ModeToggle />
-        <Button className="bg-amber-200" size="icon" asChild>
+        <Button className="bg-primary" size="icon" asChild>
           <Link href="/profile">
             <User />
           </Link>

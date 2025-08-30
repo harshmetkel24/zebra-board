@@ -68,7 +68,7 @@ const ZebraBoard: React.FC = () => {
   return (
     <div className="h-full flex-center flex-col p-4">
       <div className="w-full max-w-4xl">
-        <div className="flex-between mb-4 text-sm text-amber-300">
+        <div className="flex-between mb-4 text-sm text-primary">
           <span>WPM: {wpm}</span>
           <span>Accuracy: {accuracy}%</span>
         </div>
