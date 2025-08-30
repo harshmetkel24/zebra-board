@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar";
-import Footer from "@/components/ui/footer";
 import { ThemeProvider } from "@/components/providers/themeProvider";
+import Footer from "@/components/ui/footer";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

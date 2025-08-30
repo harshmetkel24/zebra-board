@@ -102,4 +102,4 @@ export const getTheme = (name: string) => {
   return themes[name];
 };
 
-export const defaultTheme = "ocean";
+export const defaultTheme = "default";
