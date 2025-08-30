@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { defaultTheme, getTheme, getThemeNames } from "@/lib/themes";
 import clsx from "clsx";
-import { Check, Palette } from "lucide-react";
+import { ArrowUpRight, Check, Palette } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import ColorsPreview from "./colorsPreview";
 
@@ -83,7 +84,7 @@ export function ThemeSwitcher() {
             <DropdownMenuItem
               key={themeName}
               onClick={() => handleThemeSelect(themeName)}
-              className="flex items-center justify-between cursor-pointer"
+              className="flex-between cp"
             >
               <div className="flex items-center gap-2">
                 <ColorsPreview theme={themeName} />
@@ -93,6 +94,14 @@ export function ThemeSwitcher() {
             </DropdownMenuItem>
           );
         })}
+
+        <DropdownMenuItem className="cp" asChild>
+          <Button variant="secondary" size="sm" asChild>
+            <Link href="/theme-preview">
+              Preview <ArrowUpRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
