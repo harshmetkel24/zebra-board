@@ -115,6 +115,126 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
+
+
+/* THEME VARIABLES START */
+
+/* Ocean Blue Theme */
+[data-theme="ocean"] {
+  --primary: #1e40af;
+  --secondary: #3b82f6;
+  --tertiary: #60a5fa;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #000000;
+}
+
+[data-theme="ocean"].dark,
+.dark[data-theme="ocean"] {
+  --primary: #1e3a8a;
+  --secondary: #2563eb;
+  --tertiary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #ffffff;
+}
+/* Forest Green Theme */
+[data-theme="forest"] {
+  --primary: #166534;
+  --secondary: #22c55e;
+  --tertiary: #4ade80;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #000000;
+}
+
+[data-theme="forest"].dark,
+.dark[data-theme="forest"] {
+  --primary: #14532d;
+  --secondary: #16a34a;
+  --tertiary: #22c55e;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #ffffff;
+}
+/* Sunset Orange Theme */
+[data-theme="sunset"] {
+  --primary: #c2410c;
+  --secondary: #ea580c;
+  --tertiary: #fb923c;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #000000;
+}
+
+[data-theme="sunset"].dark,
+.dark[data-theme="sunset"] {
+  --primary: #9a3412;
+  --secondary: #c2410c;
+  --tertiary: #ea580c;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #ffffff;
+}
+/* Purple Dream Theme */
+[data-theme="purple"] {
+  --primary: #7c3aed;
+  --secondary: #a855f7;
+  --tertiary: #c084fc;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #000000;
+}
+
+[data-theme="purple"].dark,
+.dark[data-theme="purple"] {
+  --primary: #6b21a8;
+  --secondary: #7c3aed;
+  --tertiary: #a855f7;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #ffffff;
+}
+/* Rose Pink Theme */
+[data-theme="rose"] {
+  --primary: #be185d;
+  --secondary: #ec4899;
+  --tertiary: #f472b6;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #000000;
+}
+
+[data-theme="rose"].dark,
+.dark[data-theme="rose"] {
+  --primary: #9d174d;
+  --secondary: #be185d;
+  --tertiary: #ec4899;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #ffffff;
+}
+/* Modern Slate Theme */
+[data-theme="slate"] {
+  --primary: #334155;
+  --secondary: #64748b;
+  --tertiary: #94a3b8;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #000000;
+}
+
+[data-theme="slate"].dark,
+.dark[data-theme="slate"] {
+  --primary: #1e293b;
+  --secondary: #334155;
+  --tertiary: #64748b;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #ffffff;
+}
+/* THEME VARIABLES END */
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
