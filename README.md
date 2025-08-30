@@ -1,54 +1,87 @@
-# Zebra Board
+# <img src="public/zebra-board.png" alt="Zebra Board Logo" width="40" height="40" /> Zebra Board
 
-A typing speed test application inspired by [MonkeyType](https://monkeytype.com/). Test your typing speed and accuracy with customizable tests, themes, and more.
+[![Typing Speed Test](https://img.shields.io/badge/Typing-Speed%20Test-blue)](https://github.com/your-username/zebra-board)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.0-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC)](https://tailwindcss.com/)
 
-## Features
+A modern, feature-rich typing speed test application inspired by [MonkeyType](https://monkeytype.com/). Practice your typing skills with real-time feedback, multiple themes, and comprehensive statistics.
 
-- Real-time typing speed and accuracy tracking
-- Customizable test modes (time-based, word-based)
-- Multiple themes and layouts
-- Leaderboards and statistics
-- Responsive design for desktop and mobile
+![Zebra Board Preview](https://via.placeholder.com/800x400/1e40af/ffffff?text=Zebra+Board+Preview)
 
-## Tech Stack
+## ✨ Features
 
-- **Framework**: Next.js
-- **UI Library**: Shadcn UI
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
+- **Real-time WPM & Accuracy Tracking** - Live typing speed and accuracy calculations
+- **Multiple Test Modes** - Time-based and word-based typing tests
+- **Beautiful Themes** - 6 custom themes with light/dark mode support
+- **Responsive Design** - Works on desktop, tablet, and mobile
+- **Type-Safe Development** - Built with TypeScript for reliability
 
-## Getting Started
+## 🛠️ Tech Stack
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/zebra-board.git
-   cd zebra-board
-   ```
+- **Next.js** - React framework with App Router
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+- **Shadcn UI** - Modern component library
 
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
+## 🚀 Getting Started
 
-3. Run the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
+### Prerequisites
+- Node.js 18.0 or higher
+- pnpm, npm, or yarn
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-## Contributing
+1. **Clone and install:**
+    ```bash
+    git clone https://github.com/your-username/zebra-board.git
+    cd zebra-board
+    npm install
+    ```
 
-Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+2. **Generate themes:**
+    ```bash
+    npm run generate-themes
+    ```
 
-## License
+3. **Start development server:**
+    ```bash
+    npm run dev
+    ```
+
+4. **Open [http://localhost:3000](http://localhost:3000)**
+
+
+
+## 📜 Scripts
+
+```bash
+npm run dev              # Start development server
+npm run build           # Build for production
+npm run lint            # Run ESLint
+npm run generate-themes # Generate theme CSS
+```
+
+## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgments
+
+- Inspired by [MonkeyType](https://monkeytype.com/)
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [Shadcn UI](https://ui.shadcn.com/)
+- Icons from [Lucide](https://lucide.dev/)
+
+---
+
+<div align="center">
+  <p>Built with ❤️ using Next.js and TypeScript</p>
+  <p>
+    <a href="#zebra-board">Back to top</a>
+  </p>
+</div>
