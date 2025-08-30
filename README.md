@@ -8,7 +8,6 @@
 
 A modern, feature-rich typing speed test application inspired by [MonkeyType](https://monkeytype.com/). Practice your typing skills with real-time feedback, multiple themes, and comprehensive statistics.
 
-![Zebra Board Preview](https://via.placeholder.com/800x400/1e40af/ffffff?text=Zebra+Board+Preview)
 
 ## ✨ Features
 
