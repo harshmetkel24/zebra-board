@@ -1,4 +1,4 @@
-import ZebraBoard from "@/components/zebraBoard";
+import ZebraBoard from "@/components/test/zebraBoard";
 
 export default function Page() {
   return (
