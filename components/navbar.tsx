@@ -1,8 +1,7 @@
 import { ModeToggle } from "@/components/modeToggle";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
-import { Button } from "@/components/ui/button";
-import { User } from "lucide-react";
 import Link from "next/link";
+import SignInActions from "./auth/signInActions";
 
 const Navbar = () => {
   return (
@@ -15,11 +14,7 @@ const Navbar = () => {
       <div className="flex text-xl items-center space-x-4">
         <ThemeSwitcher />
         <ModeToggle />
-        <Button className="bg-primary" size="icon" asChild>
-          <Link href="/profile">
-            <User />
-          </Link>
-        </Button>
+        <SignInActions />
       </div>
     </nav>
   );

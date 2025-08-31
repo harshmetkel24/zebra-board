@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/providers/themeProvider";
 import Footer from "@/components/ui/footer";
+import { ClerkProvider } from "@clerk/nextjs";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -27,25 +28,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={clsx(
-          geistSans.className,
-          geistMono.className,
-          "${geistMono.variable} min-h-screen w-screen antialiased flex flex-col",
-        )}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={clsx(
+            geistSans.className,
+            geistMono.className,
+            "${geistMono.variable} min-h-screen w-screen antialiased flex flex-col",
+          )}
         >
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
