@@ -20,13 +20,8 @@ export function ThemeSwitcher() {
   const [selectedCustomTheme, setSelectedCustomTheme] =
     useState<string>("ocean");
 
-  useEffect(() => {
-    // Get the current custom theme from data-theme attribute
-    const htmlElement = document.documentElement;
-    const currentCustomTheme =
-      htmlElement.getAttribute("data-theme") || defaultTheme;
-    setSelectedCustomTheme(currentCustomTheme);
-  }, []);
+  const themeNames = getThemeNames();
+  const isDark = currentTheme === "dark";
 
   const handleThemeSelect = (themeName: string) => {
     const htmlElement = document.documentElement;
@@ -36,24 +31,36 @@ export function ThemeSwitcher() {
     localStorage.setItem("custom-theme", themeName);
   };
 
-  const refCallback = useCallback(() => {
+  const applyThemeColor = useCallback(
+    (element: HTMLDivElement) => {
+      const htmlElement = document.documentElement;
+      const currentCustomTheme =
+        htmlElement.getAttribute("data-theme") || defaultTheme;
+      setSelectedCustomTheme(currentCustomTheme);
+      if (element) {
+        const color = isDark
+          ? getTheme(selectedCustomTheme)?.dark.primary
+          : getTheme(selectedCustomTheme)?.light.primary;
+        element.style.backgroundColor = color;
+      }
+    },
+    [isDark, selectedCustomTheme],
+  );
+
+  useEffect(() => {
+    // Get the current custom theme from data-theme attribute
     const htmlElement = document.documentElement;
     const currentCustomTheme =
       htmlElement.getAttribute("data-theme") || defaultTheme;
     setSelectedCustomTheme(currentCustomTheme);
   }, []);
 
-  const themeNames = getThemeNames();
-  const isDark = currentTheme === "dark";
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="relative">
           <Palette className="h-[1.2rem] w-[1.2rem]" />
-          <span ref={refCallback} className="sr-only">
-            Switch theme
-          </span>
+          <span className="sr-only">Switch theme</span>
           {/* Color indicator */}
           <div
             className={clsx(
@@ -62,11 +69,12 @@ export function ThemeSwitcher() {
                 hidden: selectedCustomTheme === defaultTheme,
               },
             )}
-            style={{
-              backgroundColor: isDark
-                ? getTheme(selectedCustomTheme)?.dark.primary
-                : getTheme(selectedCustomTheme)?.light.primary,
-            }}
+            ref={applyThemeColor}
+            // style={{
+            //   backgroundColor: isDark
+            //     ? getTheme(selectedCustomTheme)?.dark.primary
+            //     : getTheme(selectedCustomTheme)?.light.primary,
+            // }}
           />
         </Button>
       </DropdownMenuTrigger>
