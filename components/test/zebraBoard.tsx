@@ -1,7 +1,7 @@
 "use client";
 
 import { RotateCcw } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -19,6 +19,12 @@ const ZebraBoard: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(TEST_DURATIONS[0]);
   const [isTestActive, setIsTestActive] = useState(true);
   const [isTestFinished, setIsTestFinished] = useState(false);
+  const inputRef = useRef<HTMLDivElement>(null);
+
+  const inputRefCallback = React.useCallback((node: HTMLDivElement) => {
+    inputRef.current = node;
+    inputRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     fetch("/data.json")
@@ -39,37 +45,48 @@ const ZebraBoard: React.FC = () => {
     }
   }, [timeLeft, startTime, isTestActive]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isTestActive) return;
 
-    const value = e.target.value;
-    setUserInput(value);
+    let newInput = userInput;
+    let newIndex = currentIndex;
+
+    if (e.key === "Backspace") {
+      newInput = userInput.slice(0, -1);
+      newIndex = Math.max(0, currentIndex - 1);
+    } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+      newInput = userInput + e.key;
+      newIndex = currentIndex + 1;
+    } else {
+      return; // Ignore other keys
+    }
+
+    setUserInput(newInput);
+    setCurrentIndex(newIndex);
 
     if (!startTime) {
       setStartTime(Date.now());
       setTimeLeft(selectedTime);
     }
 
-    setCurrentIndex(value.length);
-
     // Calculate WPM
     if (startTime) {
       const timeElapsed = (Date.now() - startTime) / 1000 / 60; // minutes
-      const wordsTyped = value.length / 5; // average word length
+      const wordsTyped = newInput.length / 5; // average word length
       setWpm(Math.round(wordsTyped / timeElapsed));
     }
 
     // Calculate accuracy
     let correctChars = 0;
-    for (let i = 0; i < value.length; i++) {
-      if (value[i] === currentParagraph[i]) {
+    for (let i = 0; i < newInput.length; i++) {
+      if (newInput[i] === currentParagraph[i]) {
         correctChars++;
       }
     }
-    setAccuracy(Math.round((correctChars / value.length) * 100) || 100);
+    setAccuracy(Math.round((correctChars / newInput.length) * 100) || 100);
 
     // Check if paragraph is completed
-    if (value.length === currentParagraph.length) {
+    if (newInput.length === currentParagraph.length) {
       // Load new paragraph and append it
       fetch("/data.json")
         .then((response) => response.json())
@@ -81,6 +98,8 @@ const ZebraBoard: React.FC = () => {
           setCurrentParagraph((prev) => prev + " " + newParagraph);
         });
     }
+
+    e.preventDefault();
   };
 
   const renderText = () => {
@@ -166,20 +185,14 @@ const ZebraBoard: React.FC = () => {
         {isTestFinished ? (
           <TestResult wpm={wpm} accuracy={accuracy} restartTest={restartTest} />
         ) : (
-          <>
-            <div className="text-xl font-mono font-extrabold leading-relaxed mb-4">
-              {renderText()}
-            </div>
-            <textarea
-              value={userInput}
-              onChange={handleInputChange}
-              className="w-full bg-gray-700 text-white font-mono p-3 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows={4}
-              placeholder="Start typing here..."
-              autoFocus
-              disabled={!isTestActive}
-            />
-          </>
+          <div
+            ref={inputRefCallback}
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            className="text-xl font-mono font-extrabold leading-relaxed mb-4 focus:outline-none cursor-text"
+          >
+            {renderText()}
+          </div>
         )}
       </div>
     </div>

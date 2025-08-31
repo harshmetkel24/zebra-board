@@ -21,7 +21,7 @@ const TestResult = (props: Props) => {
           Accuracy: <span className="font-semibold">{accuracy}%</span>
         </p>
       </div>
-      <Button onClick={restartTest} className="w-full">
+      <Button onClick={restartTest} className="m-auto">
         Restart Test
       </Button>
     </Card>
