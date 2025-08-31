@@ -1,20 +1,11 @@
-import { Clock, Target, Trophy, User } from "lucide-react";
+import UserProfileCard from "@/components/user/userProfileCard";
+import { Clock, Target, Trophy } from "lucide-react";
 
 export default function ProfilePage() {
   return (
     <div className="h-ex-nav-footer overflow-y-auto flex-center bg-background p-4">
       <div className="w-3xl max-w-4xl mx-auto space-y-6">
-        <div className="bg-card p-6 rounded-lg shadow-sm border text-center">
-          <div className="w-24 h-24 bg-muted rounded-full mx-auto mb-4 flex items-center justify-center">
-            <User className="w-12 h-12 text-muted-foreground" />
-          </div>
-          <h1 className="text-2xl font-bold">John Doe</h1>
-          <p className="text-muted-foreground">Typing Enthusiast</p>
-          <span className="inline-block mt-2 px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm">
-            Level 5
-          </span>
-        </div>
-
+        <UserProfileCard />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-card p-4 rounded-lg shadow-sm border">
             <div className="flex items-center justify-between">
