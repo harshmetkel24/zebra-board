@@ -3,7 +3,6 @@ import { User } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import SignInButton from "./signInButton";
-import SignUpButton from "./signUpButton";
 
 const SignInActions = () => {
   return (
@@ -17,7 +16,7 @@ const SignInActions = () => {
       </SignedIn>
       <SignedOut>
         <SignInButton />
-        <SignUpButton />
+        {/*<SignUpButton />*/}
       </SignedOut>
     </>
   );
