@@ -72,7 +72,7 @@ const ZebraBoard: React.FC = () => {
           <span>WPM: {wpm}</span>
           <span>Accuracy: {accuracy}%</span>
         </div>
-        <div className="text-xl font-mono leading-relaxed mb-4">
+        <div className="text-xl font-mono font-extrabold leading-relaxed mb-4">
           {renderText()}
         </div>
         <textarea
