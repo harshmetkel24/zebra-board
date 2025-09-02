@@ -5,7 +5,11 @@ import { useUser } from "@clerk/nextjs";
 import { User } from "lucide-react";
 
 const UserProfileCard = () => {
-  const { user, isLoaded } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
+
+  if (!isSignedIn) {
+    return <div>Please login to view your profile</div>;
+  }
 
   return (
     <div className="bg-card p-6 rounded-lg shadow-sm border text-center">
