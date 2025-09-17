@@ -61,7 +61,6 @@ export function ThemeSwitcher() {
         <Button variant="outline" size="icon" className="relative">
           <Palette className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Switch theme</span>
-          {/* Color indicator */}
           <div
             className={clsx(
               "absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-background",
@@ -70,11 +69,6 @@ export function ThemeSwitcher() {
               },
             )}
             ref={applyThemeColor}
-            // style={{
-            //   backgroundColor: isDark
-            //     ? getTheme(selectedCustomTheme)?.dark.primary
-            //     : getTheme(selectedCustomTheme)?.light.primary,
-            // }}
           />
         </Button>
       </DropdownMenuTrigger>
