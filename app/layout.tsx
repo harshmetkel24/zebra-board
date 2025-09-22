@@ -2,6 +2,8 @@ import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/providers/themeProvider";
 import Footer from "@/components/ui/footer";
 import { ClerkProvider } from "@clerk/nextjs";
+
+import WithUserData from "@/components/hocs/withUserData";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -43,9 +45,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <WithUserData>
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </WithUserData>
           </ThemeProvider>
         </body>
       </html>
