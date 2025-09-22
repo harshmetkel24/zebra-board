@@ -12,7 +12,11 @@ export function ThemeProvider({
 
   return (
     <NextThemesProvider {...props}>
-      {isLoading ? <Loading /> : children}
+      {isLoading ? (
+        <Loading text="Downloading user data" showProgress />
+      ) : (
+        children
+      )}
     </NextThemesProvider>
   );
 }

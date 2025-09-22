@@ -3,9 +3,14 @@ import { Loader2 } from "lucide-react";
 interface LoadingProps {
   text?: string;
   size?: "sm" | "md" | "lg";
+  showProgress?: boolean;
 }
 
-export function Loading({ text = "Loading...", size = "md" }: LoadingProps) {
+export function Loading({
+  text = "Loading...",
+  size = "md",
+  showProgress = false,
+}: LoadingProps) {
   const sizeClasses = {
     sm: "size-6",
     md: "size-8",
@@ -15,7 +20,16 @@ export function Loading({ text = "Loading...", size = "md" }: LoadingProps) {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="flex flex-col items-center gap-4">
-        <Loader2 className={`animate-spin ${sizeClasses[size]}`} />
+        {showProgress ? (
+          <div className="w-64 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 animate-pulse"
+              style={{ width: "100%" }}
+            ></div>
+          </div>
+        ) : (
+          <Loader2 className={`animate-spin ${sizeClasses[size]}`} />
+        )}
         <p className="text-lg font-medium">{text}</p>
       </div>
     </div>
