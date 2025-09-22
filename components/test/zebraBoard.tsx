@@ -19,11 +19,11 @@ const ZebraBoard: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(TEST_DURATIONS[0]);
   const [isTestActive, setIsTestActive] = useState(true);
   const [isTestFinished, setIsTestFinished] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
 
   const inputRefCallback = React.useCallback((node: HTMLDivElement) => {
     inputRef.current = node;
-    inputRef.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -185,13 +185,29 @@ const ZebraBoard: React.FC = () => {
         {isTestFinished ? (
           <TestResult wpm={wpm} accuracy={accuracy} restartTest={restartTest} />
         ) : (
-          <div
-            ref={inputRefCallback}
-            tabIndex={0}
-            onKeyDown={handleKeyDown}
-            className="text-xl font-mono font-extrabold leading-relaxed mb-4 focus:outline-none cursor-text"
-          >
-            {renderText()}
+          <div className="relative">
+            <div
+              ref={inputRefCallback}
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => {
+                if (!startTime) setIsFocused(false);
+              }}
+              className="text-xl font-mono font-extrabold leading-relaxed mb-4 focus:outline-none cursor-text p-4"
+            >
+              {renderText()}
+            </div>
+            {!isFocused && !isTestFinished && (
+              <div
+                className="absolute inset-0 bg-opacity-50 rounded backdrop-blur-sm flex items-center justify-center cursor-pointer"
+                onClick={() => inputRef.current?.focus()}
+              >
+                <p className="text-white text-lg font-medium">
+                  Click to Focus and start typing
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
