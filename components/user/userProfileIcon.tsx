@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import UserProfileActions from "./userProfileActions";
 
 const UsreProfileIcon = () => {
   const { user, isLoaded } = useUser();
@@ -19,11 +20,13 @@ const UsreProfileIcon = () => {
       : User;
 
   return (
-    <Button className="bg-primary" size="icon" asChild>
-      <Link href="/profile">
-        <Icon />
-      </Link>
-    </Button>
+    <UserProfileActions>
+      <Button className="bg-primary" size="icon">
+        <Link href="/profile">
+          <Icon />
+        </Link>
+      </Button>
+    </UserProfileActions>
   );
 };
 
