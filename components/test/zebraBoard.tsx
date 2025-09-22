@@ -203,7 +203,7 @@ const ZebraBoard: React.FC = () => {
                 className="absolute inset-0 bg-opacity-50 rounded backdrop-blur-sm flex items-center justify-center cursor-pointer"
                 onClick={() => inputRef.current?.focus()}
               >
-                <p className="text-white text-lg font-medium">
+                <p className="text-primary text-lg font-medium">
                   Click to Focus and start typing
                 </p>
               </div>
