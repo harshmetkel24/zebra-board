@@ -1,13 +1,18 @@
 "use client";
 
-import useThemeSync from "@/hooks/useThemeSync";
+import { Loading } from "@/components/ui/loading";
+import useCustomTheme from "@/hooks/useCustomTheme";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function ThemeProvider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
-  useThemeSync();
+  const { isLoading } = useCustomTheme();
 
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+  return (
+    <NextThemesProvider {...props}>
+      {isLoading ? <Loading /> : children}
+    </NextThemesProvider>
+  );
 }
