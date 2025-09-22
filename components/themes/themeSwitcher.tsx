@@ -1,5 +1,6 @@
 "use client";
 
+import { updateCustomTheme } from "@/actions/themeActions";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useCustomTheme from "@/hooks/useCustomTheme";
 import { defaultTheme, getTheme, getThemeNames } from "@/lib/themes";
 import clsx from "clsx";
 import { ArrowUpRight, Check, Palette } from "lucide-react";
@@ -17,18 +19,22 @@ import ColorsPreview from "./colorsPreview";
 
 export function ThemeSwitcher() {
   const { theme: currentTheme } = useTheme();
+  const { mutate } = useCustomTheme();
   const [selectedCustomTheme, setSelectedCustomTheme] =
     useState<string>("ocean");
 
   const themeNames = getThemeNames();
   const isDark = currentTheme === "dark";
 
-  const handleThemeSelect = (themeName: string) => {
+  const handleThemeSelect = async (themeName: string) => {
     const htmlElement = document.documentElement;
     htmlElement.setAttribute("data-theme", themeName);
     setSelectedCustomTheme(themeName);
 
     localStorage.setItem("custom-theme", themeName);
+
+    const updatedData = await updateCustomTheme(themeName);
+    mutate(updatedData);
   };
 
   const applyThemeColor = useCallback(
