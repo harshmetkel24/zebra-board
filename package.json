@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "docker:up": "docker-compose up -d",
+    "drizzle:studio": "pnpm drizzle-kit studio",
+    "drizzle:push": "pnpm drizzle-kit push",
     "start": "next start",
     "lint": "eslint",
     "generate-themes": "node scripts/generate-theme-css.js"
