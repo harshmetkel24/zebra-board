@@ -21,11 +21,11 @@ const UsreProfileIcon = () => {
 
   return (
     <UserProfileActions>
-      <Button className="bg-primary" size="icon">
-        <Link href="/profile">
+      <Link href="/profile">
+        <Button className="bg-primary" size="icon">
           <Icon />
-        </Link>
-      </Button>
+        </Button>
+      </Link>
     </UserProfileActions>
   );
 };
