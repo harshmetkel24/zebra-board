@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 export const getCustomTheme = async () => {
   const authObj = await auth();
 
-  return authObj
+  return authObj.isAuthenticated
     ? await db
         .select()
         .from(personalization)
@@ -19,7 +19,7 @@ export const getCustomTheme = async () => {
 export const updateCustomTheme = async (themeName: string) => {
   const authObj = await auth();
 
-  return authObj
+  return authObj.isAuthenticated
     ? await db
         .update(personalization)
         .set({ customTheme: themeName })

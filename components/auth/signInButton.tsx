@@ -5,7 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const SignInButton = () => {
   return (
-    <ClerkSignInButton>
+    <ClerkSignInButton forceRedirectUrl={"/after-signin"}>
       <Tooltip>
         <TooltipTrigger>
           <Button size="sm" variant="ghost" asChild>

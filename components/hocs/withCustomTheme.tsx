@@ -5,7 +5,7 @@ import { Loading } from "@/components/helpers/loading";
 import useCustomTheme from "@/hooks/useCustomTheme";
 import { type PropsWithChildren } from "react";
 
-export default function WithUserData({ children }: PropsWithChildren) {
+export default function WithCustomTheme({ children }: PropsWithChildren) {
   const { isLoading, error } = useCustomTheme();
 
   if (error) return <Error text="Error while downloading user data" />;
