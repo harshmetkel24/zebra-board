@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { userDetails } from "@/lib/db/schema";
+import { personalization, userDetails } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq, sql } from "drizzle-orm";
 
@@ -16,9 +16,22 @@ export const updateTestsCount = async () => {
   }
 };
 
-export const ensureUserExists = async (userId: string) => {
+export const checkIfUserExists = async (userId: string) => {
   return await db
-    .insert(userDetails)
-    .values({ userId })
-    .onConflictDoNothing({ target: userDetails.userId });
+    .select()
+    .from(userDetails)
+    .where(eq(userDetails.userId, userId));
+};
+
+export const ensureUserExists = async (userId: string) => {
+  return await db.transaction(async (tx) => {
+    await tx
+      .insert(userDetails)
+      .values({ userId })
+      .onConflictDoNothing({ target: userDetails.userId });
+    await tx
+      .insert(personalization)
+      .values({ userId })
+      .onConflictDoNothing({ target: personalization.userId });
+  });
 };

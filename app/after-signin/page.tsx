@@ -1,11 +1,14 @@
 import { ensureUserExists } from "@/actions/userDetails";
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 export default async function Page() {
   const authObj = await auth();
-  if (authObj?.userId) {
+
+  if (authObj.isAuthenticated) {
     await ensureUserExists(authObj.userId);
+    // redirect("/");
   }
-  redirect("/");
+
+  return null;
 }

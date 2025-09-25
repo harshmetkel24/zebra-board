@@ -10,8 +10,11 @@ export const userDetails = pgTable("user_details", {
 
 export const personalization = pgTable("personalization", {
   id: serial("id").primaryKey(),
-  userId: text("user_id").references(() => userDetails.userId, {
-    onDelete: "cascade",
-  }),
+  userId: text("user_id")
+    .notNull()
+    .unique()
+    .references(() => userDetails.userId, {
+      onDelete: "cascade",
+    }),
   customTheme: varchar("custom-theme", { length: 128 }).default("default"),
 });
