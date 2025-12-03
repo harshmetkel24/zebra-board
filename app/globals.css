@@ -115,8 +115,29 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
+
+
 /* THEME VARIABLES START */
 
+/* Default Theme */
+[data-theme="default"] {
+  --primary: oklch(0.21 0.006 285.885);
+  --secondary: oklch(0.967 0.001 286.375);
+  --tertiary: oklch(0.967 0.001 286.375);
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #000000;
+}
+
+[data-theme="default"].dark,
+.dark[data-theme="default"] {
+  --primary: oklch(0.92 0.004 286.32);
+  --secondary: oklch(0.274 0.006 286.033);
+  --tertiary: oklch(0.274 0.006 286.033);
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --tertiary-foreground: #ffffff;
+}
 /* Ocean Blue Theme */
 [data-theme="ocean"] {
   --primary: #1e40af;
