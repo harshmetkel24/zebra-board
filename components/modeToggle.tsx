@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeType } from "@/lib/themes/types";
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
@@ -24,17 +25,17 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")} className="flex items-center justify-between">
+        <DropdownMenuItem onClick={() => setTheme(ThemeType.Light)} className="flex items-center justify-between">
           <span>Light</span>
-          {theme === "light" && <Check className="h-4 w-4" />}
+          {theme === ThemeType.Light && <Check className="h-4 w-4" />}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")} className="flex items-center justify-between">
+        <DropdownMenuItem onClick={() => setTheme(ThemeType.Dark)} className="flex items-center justify-between">
           <span>Dark</span>
-          {theme === "dark" && <Check className="h-4 w-4" />}
+          {theme === ThemeType.Dark && <Check className="h-4 w-4" />}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")} className="flex items-center justify-between">
+        <DropdownMenuItem onClick={() => setTheme(ThemeType.System)} className="flex items-center justify-between">
           <span>System</span>
-          {theme === "system" && <Check className="h-4 w-4" />}
+          {theme === ThemeType.System && <Check className="h-4 w-4" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

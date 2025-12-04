@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useCustomTheme from "@/hooks/useCustomTheme";
 import { defaultTheme, getTheme, getThemeNames } from "@/lib/themes";
+import { ThemeType } from "@/lib/themes/types";
 import clsx from "clsx";
 import { ArrowUpRight, Check, Palette } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -29,7 +30,7 @@ export function ThemeSwitcher() {
     });
 
   const themeNames = getThemeNames();
-  const isDark = currentTheme === "dark";
+  const isDark = currentTheme === ThemeType.Dark;
 
   const handleThemeSelect = async (themeName: string) => {
     const htmlElement = document.documentElement;
@@ -60,18 +61,18 @@ export function ThemeSwitcher() {
 
   useEffect(() => {
     const updateSelectedTheme = () => {
-      const htmlElement = document.documentElement;
+    const htmlElement = document.documentElement;
       const localStorageTheme = localStorage.getItem("custom-theme");
       const dataThemeAttribute = htmlElement.getAttribute("data-theme");
       const serverTheme = customTheme;
       
-      const currentCustomTheme = 
+    const currentCustomTheme =
         dataThemeAttribute || 
         serverTheme || 
         localStorageTheme || 
         defaultTheme;
       
-      setSelectedCustomTheme(currentCustomTheme);
+    setSelectedCustomTheme(currentCustomTheme);
     };
 
     updateSelectedTheme();
