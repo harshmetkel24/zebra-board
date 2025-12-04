@@ -60,18 +60,18 @@ export function ThemeSwitcher() {
 
   useEffect(() => {
     const updateSelectedTheme = () => {
-      const htmlElement = document.documentElement;
+    const htmlElement = document.documentElement;
       const localStorageTheme = localStorage.getItem("custom-theme");
       const dataThemeAttribute = htmlElement.getAttribute("data-theme");
       const serverTheme = customTheme;
       
-      const currentCustomTheme = 
+    const currentCustomTheme =
         dataThemeAttribute || 
         serverTheme || 
         localStorageTheme || 
         defaultTheme;
       
-      setSelectedCustomTheme(currentCustomTheme);
+    setSelectedCustomTheme(currentCustomTheme);
     };
 
     updateSelectedTheme();
