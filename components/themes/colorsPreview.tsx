@@ -1,4 +1,5 @@
 import { getTheme } from "@/lib/themes";
+import { ThemeType } from "@/lib/themes/types";
 import { useTheme } from "next-themes";
 
 interface Props {
@@ -20,7 +21,7 @@ const ColorsPreview = (props: Props) => {
   const { theme: currentTheme } = useTheme();
 
   const colors: string[] = Object.values(
-    currentTheme === "dark" ? themeConfig.dark : themeConfig.light,
+    currentTheme === ThemeType.Dark ? themeConfig.dark : themeConfig.light,
   );
 
   if (!themeConfig) return null;

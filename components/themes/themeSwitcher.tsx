@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useCustomTheme from "@/hooks/useCustomTheme";
 import { defaultTheme, getTheme, getThemeNames } from "@/lib/themes";
+import { ThemeType } from "@/lib/themes/types";
 import clsx from "clsx";
 import { ArrowUpRight, Check, Palette } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -19,12 +20,17 @@ import ColorsPreview from "./colorsPreview";
 
 export function ThemeSwitcher() {
   const { theme: currentTheme } = useTheme();
-  const { mutate } = useCustomTheme();
+  const { mutate, customTheme } = useCustomTheme();
   const [selectedCustomTheme, setSelectedCustomTheme] =
-    useState<string>("ocean");
+    useState<string>(() => {
+      if (typeof window !== "undefined") {
+        return localStorage.getItem("custom-theme") || defaultTheme;
+      }
+      return defaultTheme;
+    });
 
   const themeNames = getThemeNames();
-  const isDark = currentTheme === "dark";
+  const isDark = currentTheme === ThemeType.Dark;
 
   const handleThemeSelect = async (themeName: string) => {
     const htmlElement = document.documentElement;
@@ -45,21 +51,40 @@ export function ThemeSwitcher() {
       setSelectedCustomTheme(currentCustomTheme);
       if (element) {
         const color = isDark
-          ? getTheme(selectedCustomTheme)?.dark.primary
-          : getTheme(selectedCustomTheme)?.light.primary;
+          ? getTheme(currentCustomTheme)?.dark.primary
+          : getTheme(currentCustomTheme)?.light.primary;
         element.style.backgroundColor = color;
       }
     },
-    [isDark, selectedCustomTheme],
+    [isDark],
   );
 
   useEffect(() => {
-    // Get the current custom theme from data-theme attribute
+    const updateSelectedTheme = () => {
     const htmlElement = document.documentElement;
+      const localStorageTheme = localStorage.getItem("custom-theme");
+      const dataThemeAttribute = htmlElement.getAttribute("data-theme");
+      const serverTheme = customTheme;
+      
     const currentCustomTheme =
-      htmlElement.getAttribute("data-theme") || defaultTheme;
+        dataThemeAttribute || 
+        serverTheme || 
+        localStorageTheme || 
+        defaultTheme;
+      
     setSelectedCustomTheme(currentCustomTheme);
-  }, []);
+    };
+
+    updateSelectedTheme();
+
+    const observer = new MutationObserver(updateSelectedTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, [customTheme]);
 
   return (
     <DropdownMenu>

@@ -1,3 +1,9 @@
+export enum ThemeType {
+  Light = "light",
+  Dark = "dark",
+  System = "system",
+}
+
 export interface Pallette {
   primary: string;
   secondary: string;

@@ -42,3 +42,6 @@ next-env.d.ts
 
 # temp theme files
 lib/themes/themes.json
+
+# clerk configuration (can include secrets)
+/.clerk/
