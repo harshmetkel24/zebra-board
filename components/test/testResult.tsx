@@ -1,14 +1,21 @@
+import { saveTestResult } from "@/actions/userDetails";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useEffect } from "react";
 
 interface Props {
   accuracy: number;
   wpm: number;
+  testDuration: number;
   restartTest: () => void;
 }
 
 const TestResult = (props: Props) => {
-  const { accuracy, wpm, restartTest } = props;
+  const { accuracy, wpm, testDuration, restartTest } = props;
+
+  useEffect(() => {
+    saveTestResult(wpm, accuracy, testDuration);
+  }, [wpm, accuracy, testDuration]);
 
   return (
     <Card className="p-6 text-center w-md">

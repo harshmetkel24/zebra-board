@@ -183,7 +183,7 @@ const ZebraBoard: React.FC = () => {
           <span>Time: {timeLeft}s</span>
         </div>
         {isTestFinished ? (
-          <TestResult wpm={wpm} accuracy={accuracy} restartTest={restartTest} />
+          <TestResult wpm={wpm} accuracy={accuracy} testDuration={selectedTime} restartTest={restartTest} />
         ) : (
           <div className="relative">
             <div
