@@ -1,37 +1,199 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { personalization, userDetails } from "@/lib/db/schema";
-import { auth } from "@clerk/nextjs/server";
-import { eq, sql } from "drizzle-orm";
+import { speedTestResults, userDetails } from "@/lib/db/schema";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { desc, eq, sql } from "drizzle-orm";
 
-export const updateTestsCount = async () => {
-  const authObj = await auth();
-
-  if (authObj.isAuthenticated) {
-    return db
-      .update(userDetails)
-      .set({ totalTests: sql`${userDetails.totalTests} + 1` })
-      .where(eq(userDetails.userId, authObj.userId));
+export const checkIfUserExists = async (userId: string) => {
+  try {
+    if (!db) {
+      console.error("Database not connected. Please set DATABASE_URL in .env.local");
+      return [];
+    }
+    return await db
+      .select()
+      .from(userDetails)
+      .where(eq(userDetails.userId, userId));
+  } catch (error) {
+    console.error("Error checking if user exists:", error);
+    return [];
   }
 };
 
-export const checkIfUserExists = async (userId: string) => {
-  return await db
-    .select()
-    .from(userDetails)
-    .where(eq(userDetails.userId, userId));
+export const ensureUserExists = async (userId: string) => {
+  try {
+    if (!db) {
+      console.error("Database not connected. Cannot ensure user exists.");
+      return;
+    }
+
+    const user = await currentUser();
+    
+    return await db.transaction(async (tx) => {
+      try {
+        await tx
+          .insert(userDetails)
+          .values({
+            userId,
+            name: user?.fullName || user?.firstName || null,
+            username: user?.username || null,
+            email: user?.primaryEmailAddress?.emailAddress || null,
+          })
+          .onConflictDoUpdate({
+            target: userDetails.userId,
+            set: {
+              name: user?.fullName || user?.firstName || null,
+              username: user?.username || null,
+              email: user?.primaryEmailAddress?.emailAddress || null,
+              updatedAt: new Date(),
+            },
+          });
+      } catch (error: any) {
+        if (error?.message?.includes('column') && error?.message?.includes('does not exist')) {
+          await tx
+            .insert(userDetails)
+            .values({ userId })
+            .onConflictDoNothing({ target: userDetails.userId });
+        } else {
+          throw error;
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error ensuring user exists:", error);
+  }
 };
 
-export const ensureUserExists = async (userId: string) => {
-  return await db.transaction(async (tx) => {
-    await tx
-      .insert(userDetails)
-      .values({ userId })
-      .onConflictDoNothing({ target: userDetails.userId });
-    await tx
-      .insert(personalization)
-      .values({ userId })
-      .onConflictDoNothing({ target: personalization.userId });
-  });
+export const saveTestResult = async (wpm: number, accuracy: number, testDuration: number) => {
+  try {
+    if (!db) {
+      console.error("Database not connected. Cannot save test result.");
+      return null;
+    }
+
+    const authObj = await auth();
+
+    if (!authObj.isAuthenticated || !authObj.userId) {
+      console.log("User not authenticated, skipping save");
+      return null;
+    }
+
+    const userExists = await checkIfUserExists(authObj.userId);
+    if (!userExists || userExists.length === 0) {
+      console.log("User doesn't exist in database, creating...");
+      await ensureUserExists(authObj.userId);
+    }
+
+    console.log("Saving test result:", { wpm, accuracy, testDuration, userId: authObj.userId });
+
+    const result = await db.transaction(async (tx) => {
+      await tx.insert(speedTestResults).values({
+        userId: authObj.userId,
+        wpm,
+        accuracy,
+        testDuration,
+      });
+
+      const results = await tx
+        .select({
+          totalTests: sql<number>`count(*)::int`,
+          avgWpm: sql<number>`avg(${speedTestResults.wpm})::int`,
+          avgAccuracy: sql<number>`avg(${speedTestResults.accuracy})::int`,
+          bestWpm: sql<number>`max(${speedTestResults.wpm})::int`,
+        })
+        .from(speedTestResults)
+        .where(eq(speedTestResults.userId, authObj.userId));
+
+      const stats = results[0];
+      console.log("Calculated stats:", stats);
+
+      await tx
+        .update(userDetails)
+        .set({
+          totalTests: stats.totalTests,
+          avgWpm: stats.avgWpm,
+          avgAccuracy: stats.avgAccuracy,
+          bestWpm: stats.bestWpm,
+          updatedAt: new Date(),
+        })
+        .where(eq(userDetails.userId, authObj.userId));
+
+      return stats;
+    });
+
+    console.log("Test result saved successfully:", result);
+    return result;
+  } catch (error) {
+    console.error("Error saving test result:", error);
+    return null;
+  }
+};
+
+export const getUserProfile = async () => {
+  try {
+    if (!db) {
+      console.error("Database not connected. Cannot fetch user profile.");
+      return null;
+    }
+
+    const authObj = await auth();
+
+    if (!authObj.isAuthenticated || !authObj.userId) {
+      console.log("getUserProfile: User not authenticated");
+      return null;
+    }
+
+    console.log("getUserProfile: Fetching profile for userId:", authObj.userId);
+
+    const user = await db
+      .select()
+      .from(userDetails)
+      .where(eq(userDetails.userId, authObj.userId))
+      .limit(1);
+
+    console.log("getUserProfile: Fetched user data:", user[0]);
+
+    if (!user[0]) {
+      console.log("getUserProfile: User not found in database, creating...");
+      await ensureUserExists(authObj.userId);
+      const newUser = await db
+        .select()
+        .from(userDetails)
+        .where(eq(userDetails.userId, authObj.userId))
+        .limit(1);
+      console.log("getUserProfile: Created user data:", newUser[0]);
+      return newUser[0] || null;
+    }
+
+    return user[0];
+  } catch (error) {
+    console.error("Error getting user profile:", error);
+    return null;
+  }
+};
+
+export const getRecentTestResults = async (limit: number = 10) => {
+  try {
+    if (!db) {
+      console.error("Database not connected. Cannot fetch test results.");
+      return [];
+    }
+
+    const authObj = await auth();
+
+    if (!authObj.isAuthenticated || !authObj.userId) {
+      return [];
+    }
+
+    return await db
+      .select()
+      .from(speedTestResults)
+      .where(eq(speedTestResults.userId, authObj.userId))
+      .orderBy(desc(speedTestResults.createdAt))
+      .limit(limit);
+  } catch (error) {
+    console.error("Error getting recent test results:", error);
+    return [];
+  }
 };

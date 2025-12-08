@@ -1,14 +1,18 @@
 import { ensureUserExists } from "@/actions/userDetails";
 import { auth } from "@clerk/nextjs/server";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
-  const authObj = await auth();
+  try {
+    const authObj = await auth();
 
-  if (authObj.isAuthenticated) {
-    await ensureUserExists(authObj.userId);
-    // redirect("/");
+    if (authObj.isAuthenticated) {
+      await ensureUserExists(authObj.userId);
+      redirect("/");
+    }
+  } catch (error) {
+    console.error("Error in after-signin:", error);
   }
 
-  return null;
+  redirect("/");
 }
