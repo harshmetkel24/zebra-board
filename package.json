@@ -7,8 +7,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "docker:up": "docker-compose up -d",
-    "drizzle:studio": "pnpm drizzle-kit studio",
-    "drizzle:push": "pnpm drizzle-kit push",
+    "drizzle:studio": "npx drizzle-kit studio",
+    "drizzle:push": "npx drizzle-kit push",
     "start": "next start",
     "lint": "eslint",
     "generate-themes": "node scripts/generate-theme-css.js"
@@ -23,6 +23,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.5",
     "lucide-react": "^0.541.0",
     "next": "15.5.0",

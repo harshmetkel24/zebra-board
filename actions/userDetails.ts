@@ -7,6 +7,10 @@ import { desc, eq, sql } from "drizzle-orm";
 
 export const checkIfUserExists = async (userId: string) => {
   try {
+    if (!db) {
+      console.error("Database not connected. Please set DATABASE_URL in .env.local");
+      return [];
+    }
     return await db
       .select()
       .from(userDetails)
@@ -19,6 +23,11 @@ export const checkIfUserExists = async (userId: string) => {
 
 export const ensureUserExists = async (userId: string) => {
   try {
+    if (!db) {
+      console.error("Database not connected. Cannot ensure user exists.");
+      return;
+    }
+
     const user = await currentUser();
     
     return await db.transaction(async (tx) => {
@@ -58,13 +67,27 @@ export const ensureUserExists = async (userId: string) => {
 
 export const saveTestResult = async (wpm: number, accuracy: number, testDuration: number) => {
   try {
-    const authObj = await auth();
-
-    if (!authObj.isAuthenticated || !authObj.userId) {
+    if (!db) {
+      console.error("Database not connected. Cannot save test result.");
       return null;
     }
 
-    return await db.transaction(async (tx) => {
+    const authObj = await auth();
+
+    if (!authObj.isAuthenticated || !authObj.userId) {
+      console.log("User not authenticated, skipping save");
+      return null;
+    }
+
+    const userExists = await checkIfUserExists(authObj.userId);
+    if (!userExists || userExists.length === 0) {
+      console.log("User doesn't exist in database, creating...");
+      await ensureUserExists(authObj.userId);
+    }
+
+    console.log("Saving test result:", { wpm, accuracy, testDuration, userId: authObj.userId });
+
+    const result = await db.transaction(async (tx) => {
       await tx.insert(speedTestResults).values({
         userId: authObj.userId,
         wpm,
@@ -83,6 +106,7 @@ export const saveTestResult = async (wpm: number, accuracy: number, testDuration
         .where(eq(speedTestResults.userId, authObj.userId));
 
       const stats = results[0];
+      console.log("Calculated stats:", stats);
 
       await tx
         .update(userDetails)
@@ -97,6 +121,9 @@ export const saveTestResult = async (wpm: number, accuracy: number, testDuration
 
       return stats;
     });
+
+    console.log("Test result saved successfully:", result);
+    return result;
   } catch (error) {
     console.error("Error saving test result:", error);
     return null;
@@ -105,11 +132,19 @@ export const saveTestResult = async (wpm: number, accuracy: number, testDuration
 
 export const getUserProfile = async () => {
   try {
+    if (!db) {
+      console.error("Database not connected. Cannot fetch user profile.");
+      return null;
+    }
+
     const authObj = await auth();
 
     if (!authObj.isAuthenticated || !authObj.userId) {
+      console.log("getUserProfile: User not authenticated");
       return null;
     }
+
+    console.log("getUserProfile: Fetching profile for userId:", authObj.userId);
 
     const user = await db
       .select()
@@ -117,7 +152,21 @@ export const getUserProfile = async () => {
       .where(eq(userDetails.userId, authObj.userId))
       .limit(1);
 
-    return user[0] || null;
+    console.log("getUserProfile: Fetched user data:", user[0]);
+
+    if (!user[0]) {
+      console.log("getUserProfile: User not found in database, creating...");
+      await ensureUserExists(authObj.userId);
+      const newUser = await db
+        .select()
+        .from(userDetails)
+        .where(eq(userDetails.userId, authObj.userId))
+        .limit(1);
+      console.log("getUserProfile: Created user data:", newUser[0]);
+      return newUser[0] || null;
+    }
+
+    return user[0];
   } catch (error) {
     console.error("Error getting user profile:", error);
     return null;
@@ -126,6 +175,11 @@ export const getUserProfile = async () => {
 
 export const getRecentTestResults = async (limit: number = 10) => {
   try {
+    if (!db) {
+      console.error("Database not connected. Cannot fetch test results.");
+      return [];
+    }
+
     const authObj = await auth();
 
     if (!authObj.isAuthenticated || !authObj.userId) {

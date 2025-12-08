@@ -1,10 +1,28 @@
-import { getRecentTestResults, getUserProfile } from "@/actions/userDetails";
-import UserProfileCard from "@/components/user/userProfileCard";
-import { Clock, Target, Trophy } from "lucide-react";
+"use client";
 
-export default async function ProfilePage() {
-  const userProfile = await getUserProfile();
-  const recentTests = await getRecentTestResults(10);
+import UserProfileCard from "@/components/user/userProfileCard";
+import useTestResults from "@/hooks/useTestResults";
+import useUserProfile from "@/hooks/useUserProfile";
+import { testDatabaseConnection } from "@/actions/testDb";
+import { Button } from "@/components/ui/button";
+import { Clock, RefreshCw, Target, Trophy } from "lucide-react";
+import { useEffect } from "react";
+
+export default function ProfilePage() {
+  const { userProfile, isLoading: profileLoading, mutate: refreshProfile } = useUserProfile();
+  const { testResults: recentTests, isLoading: testsLoading, mutate: refreshTests } = useTestResults(10);
+
+  useEffect(() => {
+    testDatabaseConnection().then((result) => {
+      console.log("Database connection test:", result);
+    });
+  }, []);
+
+  const handleRefresh = async () => {
+    console.log("Manual refresh triggered");
+    await refreshProfile();
+    await refreshTests();
+  };
 
   const formatTimeAgo = (date: Date | null) => {
     if (!date) return "Unknown";
@@ -19,9 +37,55 @@ export default async function ProfilePage() {
     return testDate.toLocaleDateString();
   };
 
+  if (profileLoading || testsLoading) {
+    return (
+      <div className="h-ex-nav-footer overflow-y-auto flex-center bg-background p-4">
+        <div className="w-3xl max-w-4xl mx-auto space-y-6">
+          <div className="text-center">Loading profile data...</div>
+        </div>
+      </div>
+    );
+  }
+
+  const hasDatabaseError = !userProfile && !profileLoading;
+
   return (
     <div className="h-ex-nav-footer overflow-y-auto flex-center bg-background p-4">
       <div className="w-3xl max-w-4xl mx-auto space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Profile</h1>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={profileLoading || testsLoading}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${(profileLoading || testsLoading) ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </div>
+        
+        {hasDatabaseError && (
+          <div className="bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-800 p-6 rounded-lg">
+            <h2 className="text-lg font-bold text-red-800 dark:text-red-200 mb-2">
+              ⚠️ Database Not Connected
+            </h2>
+            <p className="text-sm text-red-700 dark:text-red-300 mb-4">
+              The profile page cannot load data because the database connection is not configured.
+            </p>
+            <div className="space-y-2 text-sm text-red-600 dark:text-red-400">
+              <p><strong>To fix this:</strong></p>
+              <ol className="list-decimal list-inside space-y-1 ml-2">
+                <li>Get your Neon DB connection string from <a href="https://console.neon.tech" target="_blank" rel="noopener noreferrer" className="underline">console.neon.tech</a></li>
+                <li>Open <code className="bg-red-200 dark:bg-red-800 px-1 rounded">.env.local</code> file</li>
+                <li>Replace the placeholder with your actual connection string</li>
+                <li>Run <code className="bg-red-200 dark:bg-red-800 px-1 rounded">pnpm drizzle:push</code> to set up the database</li>
+                <li>Restart the dev server</li>
+              </ol>
+            </div>
+          </div>
+        )}
+
         <UserProfileCard />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-card p-4 rounded-lg shadow-sm border">

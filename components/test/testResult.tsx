@@ -1,7 +1,9 @@
 import { saveTestResult } from "@/actions/userDetails";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { mutate } from "swr";
 
 interface Props {
   accuracy: number;
@@ -12,10 +14,41 @@ interface Props {
 
 const TestResult = (props: Props) => {
   const { accuracy, wpm, testDuration, restartTest } = props;
+  const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const hasSavedRef = useRef(false);
 
   useEffect(() => {
-    saveTestResult(wpm, accuracy, testDuration);
-  }, [wpm, accuracy, testDuration]);
+    if (hasSavedRef.current) return;
+    
+    const saveResult = async () => {
+      if (wpm <= 0 || accuracy < 0) return;
+      
+      hasSavedRef.current = true;
+      setIsSaving(true);
+      try {
+        const result = await saveTestResult(wpm, accuracy, testDuration);
+        console.log("Test result saved:", result);
+        
+        mutate("user-profile", undefined, { revalidate: true });
+        mutate(["test-results", 10], undefined, { revalidate: true });
+        
+        router.refresh();
+      } catch (error) {
+        console.error("Error saving test result:", error);
+        hasSavedRef.current = false;
+      } finally {
+        setIsSaving(false);
+      }
+    };
+    
+    saveResult();
+  }, [wpm, accuracy, testDuration, router]);
+
+  const handleRestart = () => {
+    hasSavedRef.current = false;
+    restartTest();
+  };
 
   return (
     <Card className="p-6 text-center w-md">
@@ -28,7 +61,7 @@ const TestResult = (props: Props) => {
           Accuracy: <span className="font-semibold">{accuracy}%</span>
         </p>
       </div>
-      <Button onClick={restartTest} className="m-auto">
+      <Button onClick={handleRestart} className="m-auto">
         Restart Test
       </Button>
     </Card>
