@@ -223,6 +223,37 @@
   filter: drop-shadow(0 0 8px currentColor);
 }
 
+/* Profile Page Glow Effects */
+.profile-card-glow {
+  box-shadow: 0 0 30px rgba(0, 217, 255, 0.15), 0 0 60px rgba(157, 78, 221, 0.1);
+  transition: all 0.3s ease;
+}
+
+.profile-card-glow:hover {
+  box-shadow: 0 0 40px rgba(0, 217, 255, 0.25), 0 0 80px rgba(157, 78, 221, 0.15);
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.stat-card-glow {
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.1), 0 0 40px rgba(157, 78, 221, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stat-card-glow:hover {
+  box-shadow: 0 0 30px rgba(0, 217, 255, 0.2), 0 0 60px rgba(157, 78, 221, 0.1);
+  transform: translateY(-2px);
+}
+
+.activity-card-glow {
+  box-shadow: 0 0 25px rgba(0, 217, 255, 0.12), 0 0 50px rgba(157, 78, 221, 0.08);
+  transition: all 0.3s ease;
+}
+
+.activity-card-glow:hover {
+  box-shadow: 0 0 35px rgba(0, 217, 255, 0.18), 0 0 70px rgba(157, 78, 221, 0.12);
+  border-color: rgba(0, 217, 255, 0.2);
+}
+
 
 
 /* THEME VARIABLES START */
